@@ -1,0 +1,46 @@
+# Felix' set of helpful git aliases.
+# Include by adding this to ~/.gitconfig:
+#
+# [include]
+# 	path = .gitconfig-aliases
+#
+
+[alias]
+	s  = status
+	
+	pura = pull --rebase --autostash --verbose --stat
+	puhard = git reset --hard "@{u}"
+
+	b  = branch
+	bd = branch -d
+	bD = branch -D
+	git = !git
+	
+	co = checkout
+
+	cp = cherry-pick
+
+	fetch = fetch -v
+
+	# Show tortoise git log
+	tlog = "!f(){ ~/tlog.sh $1; };f"
+	
+	# Extract jira-Id from branch name. e.g. "ABC-123" in "ABC-123_BranchName"
+	jiraid = "!f(){ git branch --show-current | grep -e '^[A-Z]\\+-[0-9]\\+' -o; };f"
+	
+	# Put jira-id before each commit. e.g. "ABC-123: My commit message"
+	bugcommit = "!f(){ git commit -m \""$(git jiraid)": "$1"\"; };f"
+	
+	# NoMergeCommit. Commit only for testing
+	nomergecommit = commit -m 'DO NOT MERGE, THIS IS ONLY FOR TESTING'
+	
+	# Put a fixup commit (nearly) directly into given commit.(Only need to save and quit, vim "wq")
+	fu = "!f(){ git commit --fixup=$1 && git rebase -i --autostash --autosquash $1^ ; };f"
+	
+	commend = commit --amend --no-edit
+	rb  = rebase
+	rbi = rebase --interactive
+	rbm = rebase origin/master
+	
+	# Checkout branch whichs name fits to given parameter
+	cr = "!f(){ git checkout $(git branch | grep \"$1\"); };f"
