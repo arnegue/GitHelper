@@ -25,9 +25,6 @@
 
 	fetch = fetch -v
 
-	# Show tortoise git log
-	tlog = "!f(){ ~/tlog.sh $1; };f"
-
 	# Extract jira-Id from branch name. e.g. "ABC-123" in "ABC-123_BranchName"
 	jiraid = "!f(){ git branch --show-current | grep -e '[A-Z]\\+-[0-9]\\+' -o; };f"
 
