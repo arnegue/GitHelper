@@ -1,4 +1,3 @@
-# Felix' edited set of helpful git aliases.
 # Include by adding this to ~/.gitconfig:
 #
 # [include]
@@ -17,6 +16,8 @@
 	bd = branch -d
 	bD = branch -D
 	git = !git
+	
+	sd = diff --staged
 
 	co = checkout
 
@@ -24,15 +25,19 @@
 
 	fetch = fetch -v
 
+	# Show tortoise git log
+	tlog = "!f(){ ~/tlog.sh $1; };f"
+
 	# Extract jira-Id from branch name. e.g. "ABC-123" in "ABC-123_BranchName"
-	jiraid = "!f(){ git branch --show-current | grep -e '^[A-Z]\\+-[0-9]\\+' -o; };f"
+	jiraid = "!f(){ git branch --show-current | grep -e '[A-Z]\\+-[0-9]\\+' -o; };f"
 
 	# Put jira-id before each commit. e.g. "ABC-123: My commit message"
 	bugcommit = "!f(){ git commit -m \""$(git jiraid)": "$1"\"; };f"
 
 	# NoMergeCommit. Commit only for testing
 	nomergecommit = commit -m 'DO NOT MERGE, THIS IS ONLY FOR TESTING'
-
+	noverifycommit = "!f(){ git commit --no-verify -m \"$1\"; };f"
+	
 	# Put a fixup commit (nearly) directly into given commit.(Only need to save and quit, vim ":wq")
 	fu = "!f(){ git commit --fixup=$1 && git rebase -i --autostash --autosquash $1^ ; };f"
 
@@ -47,7 +52,7 @@
 	# Print commit message
 	print-commit = log --format=%B -n 1
 
-	# Find Merge commits to belongig commit
+	# Find Merge commit to belongig commit
 	find-merge = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 -s | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
 
 	# Print merge commit message of given commit from its previous branch (good to see link of MergeRequest and its jira-id)
